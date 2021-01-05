@@ -30,7 +30,6 @@ echo "Priority: ${PRIORITY}"
 
 # Send alert via curl request to OpsGenie API
 STATUS_CODE=$(curl -s \
-    -o /dev/null \
     -w '%{http_code}' \
     -X POST https://api.opsgenie.com/v2/alerts \
     -H "Host: api.opsgenie.com" \
@@ -54,7 +53,7 @@ STATUS_CODE=$(curl -s \
             \"alias\": \"${ALIAS}\",
             \"message\": \"${MESSAGE}\",
             \"priority\": \"${PRIORITY}\",
-            \"tags\": [${TAGS}]
+            \"tags\": ${TAGS}
         }")
 
 # Validate status code
