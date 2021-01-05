@@ -5,6 +5,7 @@ ALIAS=${1}
 MESSAGE=${2}
 PRIORITY=${3}
 OPSGENIE_API_KEY=${4}
+TAGS=${5}
 
 # Make sure a message was defined
 if [[ -z "${MESSAGE}" ]]; then
