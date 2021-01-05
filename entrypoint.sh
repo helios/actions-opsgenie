@@ -32,6 +32,7 @@ echo "Priority: ${PRIORITY}"
 # Send alert via curl request to OpsGenie API
 STATUS_CODE=$(curl -s \
     -w '%{http_code}' \
+    -o /dev/null \
     -X POST https://api.opsgenie.com/v2/alerts \
     -H "Host: api.opsgenie.com" \
     -H "Authorization: GenieKey ${OPSGENIE_API_KEY}" \
