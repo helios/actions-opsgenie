@@ -5,7 +5,8 @@ ALIAS=${1}
 MESSAGE=${2}
 PRIORITY=${3}
 OPSGENIE_API_KEY=${4}
-TAGS=${5}
+TEAM=${5}
+TAGS=${6}
 
 # Make sure a message was defined
 if [[ -z "${MESSAGE}" ]]; then
@@ -28,6 +29,8 @@ fi
 echo "Alias: ${ALIAS}"
 echo "Message: ${MESSAGE}"
 echo "Priority: ${PRIORITY}"
+echo "Team: ${TEAM}"
+echo "Tags: ${TAGS}"
 
 # Send alert via curl request to OpsGenie API
 STATUS_CODE=$(curl -s \
@@ -55,6 +58,7 @@ STATUS_CODE=$(curl -s \
             \"alias\": \"${ALIAS}\",
             \"message\": \"${MESSAGE}\",
             \"priority\": \"${PRIORITY}\",
+            \"team\": \"${TEAM}\",
             \"tags\": [\"${TAGS}\"]
         }")
 
