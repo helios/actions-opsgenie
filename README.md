@@ -19,6 +19,14 @@ This Github action can be used to generate alert to OpsGenie by generating a CUR
 * API_KEY
 
   The OpsGenie API key (this will need to be pre-configured via the OpsGenie website)
+
+* TEAM
+
+  The OpsGenie Team tag
+
+* TAGS
+
+  Extra tags that will be included with the alert
     
 #### Example Usage
 
