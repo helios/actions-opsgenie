@@ -7,6 +7,7 @@ PRIORITY=${3}
 OPSGENIE_API_KEY=${4}
 TEAM=${5}
 TAGS=${6}
+DESCRIPTION=${7}
 
 # Make sure a message was defined
 if [[ -z "${MESSAGE}" ]]; then
@@ -31,6 +32,32 @@ echo "Message: ${MESSAGE}"
 echo "Priority: ${PRIORITY}"
 echo "Team: ${TEAM}"
 echo "Tags: ${TAGS}"
+echo "Description: ${DESCRIPTION}"
+
+LINK_TO_WORKFLOW_RUN="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+OPSGENIE_REQ_BODY="{
+            \"entity\": \"github-actions\",
+            \"source\": \"${GITHUB_REPOSITORY}\",
+            \"details\": {
+                \"github_repository\": \"${GITHUB_REPOSITORY}\",
+                \"github_ref\": \"${GITHUB_REF}\",
+                \"github_workflow\": \"${GITHUB_WORKFLOW}\",
+                \"github_action\": \"${GITHUB_ACTION}\",
+                \"github_event_name\": \"${GITHUB_EVENT_NAME}\",
+                \"github_event_path\": \"${GITHUB_EVENT_PATH}\",
+                \"github_actor\": \"${GITHUB_ACTOR}\",
+                \"github_sha\": \"${GITHUB_SHA}\",
+                \"github_workflow_run\": \"${LINK_TO_WORKFLOW_RUN}\"
+            },
+            \"alias\": \"${ALIAS}\",
+            \"message\": \"${MESSAGE}\",
+            \"priority\": \"${PRIORITY}\",
+            \"team\": \"${TEAM}\",
+            \"tags\": [\"${TAGS}\"],
+            \"description\": \"${DESCRIPTION}\n See failed run here: ${LINK_TO_WORKFLOW_RUN}\"
+        }"
+echo $OPSGENIE_REQ_BODY
 
 # Send alert via curl request to OpsGenie API
 STATUS_CODE=$(curl -s \
@@ -42,25 +69,7 @@ STATUS_CODE=$(curl -s \
     -H "User-Agent: EonxGitops/1.0.0" \
     -H "cache-control: no-cache" \
     -H "Content-Type: application/json" \
-    -d "{
-            \"entity\": \"github-actions\",
-            \"source\": \"${GITHUB_REPOSITORY}\",
-            \"details\": {
-                \"github_repository\": \"${GITHUB_REPOSITORY}\",
-                \"github_ref\": \"${GITHUB_REF}\",
-                \"github_workflow\": \"${GITHUB_WORKFLOW}\",
-                \"github_action\": \"${GITHUB_ACTION}\",
-                \"github_event_name\": \"${GITHUB_EVENT_NAME}\",
-                \"github_event_path\": \"${GITHUB_EVENT_PATH}\",
-                \"github_actor\": \"${GITHUB_ACTOR}\",
-                \"github_sha\": \"${GITHUB_SHA}\"
-            },
-            \"alias\": \"${ALIAS}\",
-            \"message\": \"${MESSAGE}\",
-            \"priority\": \"${PRIORITY}\",
-            \"team\": \"${TEAM}\",
-            \"tags\": [\"${TAGS}\"]
-        }")
+    -d "${OPSGENIE_REQ_BODY}")
 
 # Validate status code
 if [[ "${STATUS_CODE}" != "200" ]] && [[ "${STATUS_CODE}" != "201" ]] && [[ "${STATUS_CODE}" != "202" ]]; then

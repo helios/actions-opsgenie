@@ -27,6 +27,10 @@ This Github action can be used to generate alert to OpsGenie by generating a CUR
 * TAGS
 
   Extra tags that will be included with the alert
+
+* DESCRIPTION
+
+  Description field of the alert that is generally used to provide a detailed information about the alert.
     
 #### Example Usage
 

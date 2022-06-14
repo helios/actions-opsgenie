@@ -1,6 +1,6 @@
-name: 'idan-gur/actions-opsgenie'
+name: 'helios/actions-opsgenie'
 description: 'Send an alert using OpsGenie API V2'
-author: 'Idan Gur <idangur1999@gmail.com>'
+author: 'Helios Dev <dev@gethelios.dev>'
 
 branding:
   icon: 'x'
@@ -27,6 +27,10 @@ inputs:
     description: 'Optional tags to add the the alert'
     required: false
     default: ""
+  description:
+    description: 'Optional description to add the the alert'
+    required: false
+    default: ""
 
 runs:
   using: 'docker'
@@ -38,3 +42,4 @@ runs:
     - ${{ inputs.api_key }}
     - ${{ inputs.team }}
     - ${{ inputs.tags }}
+    - ${{ inputs.description }}
